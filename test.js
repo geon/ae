@@ -121,6 +121,41 @@ vows.describe('thenext')
 		}
 	})
 	.addBatch({
+		'when pipelining': {
+			topic: function () {
+
+				var callback = this.callback;
+
+				var counter = 0;
+				function generator () {
+
+					return function (argument) {
+
+						return argument + ',' + counter++;
+					};
+				}
+
+				Promise.resolve([
+					generator(),
+					generator()
+				])
+					.then(thenext.pipeline)
+					.then(function (results) {
+
+						callback(null, results);
+
+					}, function (error) {
+
+						callback(error);
+					});
+			},
+
+			'the functions should run in requence, the results passed to each other': function (topic) {
+				assert.equal(topic, 'undefined,0,1');
+			}
+		}
+	})
+	.addBatch({
 		'when sequencing': {
 			topic: function () {
 
@@ -172,41 +207,6 @@ vows.describe('thenext')
 
 			'the functions should run in requence': function (topic) {
 				assert.equal(topic, '0,1');
-			}
-		}
-	})
-	.addBatch({
-		'when pipelining': {
-			topic: function () {
-
-				var callback = this.callback;
-
-				var counter = 0;
-				function generator () {
-
-					return function (argument) {
-
-						return argument + ',' + counter++;
-					};
-				}
-
-				Promise.resolve([
-					generator(),
-					generator()
-				])
-					.then(thenext.pipeline)
-					.then(function (results) {
-
-						callback(null, results);
-
-					}, function (error) {
-
-						callback(error);
-					});
-			},
-
-			'the functions should run in requence, the results passed to each other': function (topic) {
-				assert.equal(topic, 'undefined,0,1');
 			}
 		}
 	})

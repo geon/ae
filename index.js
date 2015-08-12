@@ -35,51 +35,6 @@ thenext.reduce = function (func, initial) {
 };
 
 
-thenext.pipeline = thenext.reduce(
-	function (soFar, next) {
-
-		// Pipe each promise into the next.
-		return soFar.then(next);
-	},
-	// Start with an empty promise.
-	Promise.resolve()
-);
-
-
-thenext.all = Promise.all.bind(Promise);
-
-
-thenext.sequence = function (array) {
-
-	var results = [];
-
-	return array.reduce(
-		function (soFar, next) {
-
-			return soFar
-				.then(next)
-				.then(function (result) {
-
-					// Collect all results individually.
-					results.push(result);
-				});
-		},
-		// Start with an empty promise.
-		Promise.resolve()
-	)
-		.then(function () {
-
-			return results;
-		})
-		.catch(function (error) {
-
-			// Rethrow with partial results.
-			error.partialSequenceResults = results;
-			throw error;
-		});
-};
-
-
 thenext.object = function (names) {
 
 	// Handle multiple arguments instead of an array.
@@ -116,6 +71,53 @@ thenext.assert = function (trigger, errorMesage) {
 		return result;
 	};
 };
+
+
+thenext.all = Promise.all.bind(Promise);
+
+
+thenext.pipeline = thenext.reduce(
+	function (soFar, next) {
+
+		// Pipe each promise into the next.
+		return soFar.then(next);
+	},
+	// Start with an empty promise.
+	Promise.resolve()
+);
+
+
+thenext.sequence = function (array) {
+
+	var results = [];
+
+	return array.reduce(
+		function (soFar, next) {
+
+			return soFar
+				.then(next)
+				.then(function (result) {
+
+					// Collect all results individually.
+					results.push(result);
+				});
+		},
+		// Start with an empty promise.
+		Promise.resolve()
+	)
+		.then(function () {
+
+			return results;
+		})
+		.catch(function (error) {
+
+			// Rethrow with partial results.
+			error.partialSequenceResults = results;
+			throw error;
+		});
+};
+
+
 
 
 	// .then(thenext.apply([].join))
