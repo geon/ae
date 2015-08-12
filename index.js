@@ -57,11 +57,11 @@ thenext.object = function (names) {
 };
 
 
-thenext.assert = function (trigger, errorMesage) {
+thenext.assert = function (assertion, errorMesage) {
 
 	return function (result) {
 
-		if (trigger(result)) {
+		if (!assertion(result)) {
 
 			var error = new Error(errorMesage);
 			error.badInput = result;
