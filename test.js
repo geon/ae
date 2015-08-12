@@ -35,30 +35,38 @@ function asyncUppercase (string) {
 }
 
 
+function nodify (promise) {
+
+	return function (callback) {
+
+		promise
+			.then(function (results) {
+
+				callback(null, results);
+
+			}, function (error) {
+
+				callback(error);
+			});
+	}
+}
+
+
 vows.describe('thenext')
 	.addBatch({
 		'proxy for Array.prototype.map': {
 			topic: function () {
 
-				var callback = this.callback;
+				nodify(
+					makeUsersPromise()
+						.then(thenext.map(function (user) { return user.name; }))
+						.then(thenext.map(asyncUppercase))
+						.then(Promise.all.bind(Promise))
+						.then(function (results) {
 
-				makeUsersPromise()
-					.then(thenext.map(function (user) { return user.name; }))
-					.then(thenext.map(asyncUppercase))
-					.then(Promise.all.bind(Promise))
-					.then(function (results) {
-
-						return results.join();
-					})
-					.then(function (results) {
-
-						callback(null, results);
-
-					}, function (error) {
-
-						callback(error);
-					});
-
+							return results.join();
+						})
+				)(this.callback);
 			},
 
 			'the mapped function should be applied to all elements in the array': function (topic) {
@@ -68,24 +76,15 @@ vows.describe('thenext')
 		'proxy for Array.prototype.filter': {
 			topic: function () {
 
-				var callback = this.callback;
+				nodify(
+					makeUsersPromise()
+						.then(thenext.filter(function (user) { return user.id != 1; }))
+						.then(thenext.map(function (user) { return user.name; }))
+						.then(function (results) {
 
-				makeUsersPromise()
-					.then(thenext.filter(function (user) { return user.id != 1; }))
-					.then(thenext.map(function (user) { return user.name; }))
-					.then(function (results) {
-
-						return results.join();
-					})
-					.then(function (results) {
-
-						callback(null, results);
-
-					}, function (error) {
-
-						callback(error);
-					});
-
+							return results.join();
+						})
+				)(this.callback);
 			},
 
 			'some elements should be filtered out': function (topic) {
@@ -95,20 +94,11 @@ vows.describe('thenext')
 		'proxy for Array.prototype.reduce': {
 			topic: function () {
 
-				var callback = this.callback;
-
-				makeUsersPromise()
-					.then(thenext.map(function (user) { return user.name; }))
-					.then(thenext.reduce(function (soFar, next) { return soFar + next; }, 'foo'))
-					.then(function (results) {
-
-						callback(null, results);
-
-					}, function (error) {
-
-						callback(error);
-					});
-
+				nodify(
+					makeUsersPromise()
+						.then(thenext.map(function (user) { return user.name; }))
+						.then(thenext.reduce(function (soFar, next) { return soFar + next; }, 'foo'))
+				)(this.callback);
 			},
 
 			'the array should be reduced': function (topic) {
@@ -118,25 +108,16 @@ vows.describe('thenext')
 		'when objectifying': {
 			topic: function () {
 
-				var callback = this.callback;
-
-				Promise.resolve([
-					1,
-					'geon'
-				])
-					.then(thenext.object([
-						'id',
-						'name'
-					]))
-					.then(function (results) {
-
-						callback(null, results);
-
-					}, function (error) {
-
-						callback(error);
-					});
-
+				nodify(
+					Promise.resolve([
+						1,
+						'geon'
+					])
+						.then(thenext.object([
+							'id',
+							'name'
+						]))
+				)(this.callback);
 			},
 
 			'the array should objectified': function (topic) {
@@ -146,22 +127,13 @@ vows.describe('thenext')
 		'when asserting passes': {
 			topic: function () {
 
-				var callback = this.callback;
-
-				Promise.resolve(1)
-					.then(thenext.assert(
-						function (result) { return result == 1; },
-						'This should not be triggered.'
-					))
-					.then(function (results) {
-
-						callback(null, results);
-
-					}, function (error) {
-
-						callback(error);
-					});
-
+				nodify(
+					Promise.resolve(1)
+						.then(thenext.assert(
+							function (result) { return result == 1; },
+							'This should not be triggered.'
+						))
+				)(this.callback);
 			},
 
 			'the assert should pass': function (topic) {
@@ -171,32 +143,25 @@ vows.describe('thenext')
 		'when asserting fails': {
 			topic: function () {
 
-				var callback = this.callback;
+				nodify(
+					Promise.resolve(1)
+						.then(thenext.assert(
+							function (result) { return result == 2; },
+							'This SHOULD be triggered.'
+						))
+						.catch(function (error) {
 
-				Promise.resolve(1)
-					.then(thenext.assert(
-						function (result) { return result == 2; },
-						'This SHOULD be triggered.'
-					))
-					.then(function (results) {
-
-						callback(results);
-
-					}, function (error) {
-
-						callback(null, error.message);
-					});
-
+							return error.message;
+						})
+				)(this.callback);
 			},
 
-			'the assert should pass': function (topic) {
+			'the assert should not pass': function (topic) {
 				assert.equal(topic, 'This SHOULD be triggered.')
 			}
 		},
 		'when pipelining': {
 			topic: function () {
-
-				var callback = this.callback;
 
 				var counter = 0;
 				function generator () {
@@ -207,19 +172,13 @@ vows.describe('thenext')
 					};
 				}
 
-				Promise.resolve([
-					generator(),
-					generator()
-				])
-					.then(thenext.pipeline)
-					.then(function (results) {
-
-						callback(null, results);
-
-					}, function (error) {
-
-						callback(error);
-					});
+				nodify(
+					Promise.resolve([
+						generator(),
+						generator()
+					])
+						.then(thenext.pipeline)
+				)(this.callback);
 			},
 
 			'the functions should run in requence, the results passed to each other': function (topic) {
@@ -228,8 +187,6 @@ vows.describe('thenext')
 		},
 		'when sequencing': {
 			topic: function () {
-
-				var callback = this.callback;
 
 				var counter = 0;
 				function generator (delay) {
@@ -252,23 +209,17 @@ vows.describe('thenext')
 					};
 				}
 
-				Promise.resolve([
-					generator(100),
-					generator(10)
-				])
-					.then(thenext.sequence)
-					.then(function (results) {
+				nodify(
+					Promise.resolve([
+						generator(100),
+						generator(10)
+					])
+						.then(thenext.sequence)
+						.then(function (results) {
 
-						return results.join();
-					})
-					.then(function (results) {
-
-						callback(null, results);
-
-					}, function (error) {
-
-						callback(error);
-					});
+							return results.join();
+						})
+				)(this.callback);
 			},
 
 			'the sequenced functions should not recieve the result from the last': function (topic) {
@@ -281,19 +232,3 @@ vows.describe('thenext')
 		}
 	})
 	.run();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
