@@ -46,6 +46,9 @@ thenext.pipeline = thenext.reduce(
 );
 
 
+thenext.all = Promise.all.bind(Promise);
+
+
 thenext.sequence = function (array) {
 
 	var results = [];
@@ -113,3 +116,6 @@ thenext.assert = function (trigger, errorMesage) {
 		return result;
 	};
 };
+
+
+	// .then(thenext.apply([].join))
