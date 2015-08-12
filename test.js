@@ -33,61 +33,63 @@ function asyncUppercase (string) {
 }
 
 
-vows.describe('thenext').addBatch({
-	'when sequencing': {
-		topic: function () {
+vows.describe('thenext')
+	.addBatch({
+		'when sequencing': {
+			topic: function () {
 
-			var callback = this.callback;
+				var callback = this.callback;
 
-			var counter = 0;
-			function generator (result, delay) {
+				var counter = 0;
+				function generator (delay) {
 
-				return function (argument) {
+					return function (argument) {
 
-					if (argument) {
+						if (argument) {
 
-						throw new Error('Recieved argument.');
-					}
+							throw new Error('Recieved argument.');
+						}
 
-					return new Promise(function (resolve, reject) {
+						return new Promise(function (resolve, reject) {
 
-						setTimeout(function () {
+							setTimeout(function () {
 
-							resolve(counter++);
+								resolve(counter++);
 
-						}, delay);
+							}, delay);
+						});
+					};
+				}
+
+				Promise.resolve([
+					generator(100),
+					generator(10)
+				])
+					.then(thenext.sequence)
+					.then(function (results) {
+
+						return results.join();
+					})
+					.then(function (results) {
+
+						callback(null, results);
+
+					}, function (error) {
+
+						callback(error);
 					});
-				};
+			},
+
+			'the sequenced functions should not recieve the result from the last': function (topic) {
+				// Throws
+			},
+
+			'the functions should run in requence': function (topic) {
+				assert.equal(topic, '0,1');
 			}
-
-			Promise.resolve([
-				generator(10),
-				generator(100)
-			])
-				.then(thenext.sequence)
-				.then(function (results) {
-
-					return results.join();
-				})
-				.then(function (results) {
-
-					callback(null, results);
-
-				}, function (error) {
-
-					callback(error);
-				});
-		},
-
-		'the sequenced functions should not recieve the result from the last': function (topic) {
-			// Throws
-		},
-
-		'the functions should run in requence': function (topic) {
-			assert.equal(topic, '0,1');
 		}
-	}
-}).run();
+	})
+	.run();
 
 
 
