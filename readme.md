@@ -5,30 +5,31 @@ This library contains some helper functions for working with js promises.
 Without thenext:
 
 ```js
-	Promise.all([
-		readSomeFile(),
-		querySomeDb()
-	])
-		.then(function (results) {
+Promise.all([
+	readSomeFile(),
+	querySomeDb()
+])
+	.then(function (results) {
 
-			return {
-				fileContents: results[0],
-				dbRows:       results[1]
-			};
-		});
+		return {
+			fileContents: results[0],
+			dbRows:       results[1]
+		};
+	});
+```
 
 With thenext:
 
 ```js
-	Promise.all([
-		readSomeFile(),
-		querySomeDb()
-	])
-		.then(thenext.object(
-			'fileContents',
-			'dbRows'
-		))
-
+Promise.all([
+	readSomeFile(),
+	querySomeDb()
+])
+	.then(thenext.object(
+		'fileContents',
+		'dbRows'
+	))
+```
 
 
 
