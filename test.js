@@ -110,7 +110,26 @@ vows.describe('thenext')
 				)(this.callback);
 			},
 
-			'the array should objectified': function (topic) {
+			'the array should be objectified': function (topic) {
+				assert.equal(topic.id + topic.name, '1geon');
+			}
+		},
+		'when objectifying without an array': {
+			topic: function () {
+
+				nodify(
+					Promise.resolve([
+						1,
+						'geon'
+					])
+						.then(thenext.object(
+							'id',
+							'name'
+						))
+				)(this.callback);
+			},
+
+			'the arguments should be objectified': function (topic) {
 				assert.equal(topic.id + topic.name, '1geon');
 			}
 		},
