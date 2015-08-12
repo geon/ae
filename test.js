@@ -33,30 +33,14 @@ function asyncUppercase (string) {
 }
 
 
-function compareArrays (a, b) {
-
-	return a.length == b.length &&
-		a
-			.map(function (foo, index) {
-				return {
-					a: a[index],
-					b: b[index]
-				}
-			})
-			.reduce(function (soFar, next) {
-				return soFar && next.a === next.b;
-			}, true);
-}
-
-
-var counter = 0;
 vows.describe('thenext').addBatch({
 	'when sequencing': {
 		topic: function () {
 
 			var callback = this.callback;
 
-			function generator (delay) {
+			var counter = 0;
+			function generator (result, delay) {
 
 				return function (argument) {
 
@@ -83,6 +67,10 @@ vows.describe('thenext').addBatch({
 				.then(thenext.sequence)
 				.then(function (results) {
 
+					return results.join();
+				})
+				.then(function (results) {
+
 					callback(null, results);
 
 				}, function (error) {
@@ -96,11 +84,7 @@ vows.describe('thenext').addBatch({
 		},
 
 		'the functions should run in requence': function (topic) {
-			assert.ok(compareArrays(topic, [0, 1]));
-		},
-
-		'all functions should run': function (topic) {
-			assert.equal(counter, 2);
+			assert.equal(topic, '0,1');
 		}
 	}
 }).run();
