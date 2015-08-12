@@ -64,9 +64,7 @@ vows.describe('thenext')
 			'the mapped function should be applied to all elements in the array': function (topic) {
 				assert.equal(topic, 'GEON,NEON,PEON');
 			}
-		}
-	})
-	.addBatch({
+		},
 		'proxy for Array.prototype.filter': {
 			topic: function () {
 
@@ -93,9 +91,7 @@ vows.describe('thenext')
 			'some elements should be filtered out': function (topic) {
 				assert.equal(topic, 'neon,peon');
 			}
-		}
-	})
-	.addBatch({
+		},
 		'proxy for Array.prototype.reduce': {
 			topic: function () {
 
@@ -118,9 +114,7 @@ vows.describe('thenext')
 			'the array should be reduced': function (topic) {
 				assert.equal(topic, 'foogeonneonpeon');
 			}
-		}
-	})
-	.addBatch({
+		},
 		'when objectifying': {
 			topic: function () {
 
@@ -148,10 +142,8 @@ vows.describe('thenext')
 			'the array should objectified': function (topic) {
 				assert.equal(topic.id + topic.name, '1geon');
 			}
-		}
-	})
-	.addBatch({
-		'when asserting': {
+		},
+		'when asserting passes': {
 			topic: function () {
 
 				var callback = this.callback;
@@ -175,10 +167,8 @@ vows.describe('thenext')
 			'the assert should pass': function (topic) {
 				// throwing
 			}
-		}
-	})
-	.addBatch({
-		'when asserting': {
+		},
+		'when asserting fails': {
 			topic: function () {
 
 				var callback = this.callback;
@@ -202,9 +192,7 @@ vows.describe('thenext')
 			'the assert should pass': function (topic) {
 				assert.equal(topic, 'This SHOULD be triggered.')
 			}
-		}
-	})
-	.addBatch({
+		},
 		'when pipelining': {
 			topic: function () {
 
@@ -237,9 +225,7 @@ vows.describe('thenext')
 			'the functions should run in requence, the results passed to each other': function (topic) {
 				assert.equal(topic, 'undefined,0,1');
 			}
-		}
-	})
-	.addBatch({
+		},
 		'when sequencing': {
 			topic: function () {
 
