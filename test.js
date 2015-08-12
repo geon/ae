@@ -96,6 +96,31 @@ vows.describe('thenext')
 		}
 	})
 	.addBatch({
+		'proxy for Array.prototype.reduce': {
+			topic: function () {
+
+				var callback = this.callback;
+
+				makeUsersPromise()
+					.then(thenext.map(function (user) { return user.name; }))
+					.then(thenext.reduce(function (soFar, next) { return soFar + next; }, 'foo'))
+					.then(function (results) {
+
+						callback(null, results);
+
+					}, function (error) {
+
+						callback(error);
+					});
+
+			},
+
+			'the array should be reduced': function (topic) {
+				assert.equal(topic, 'foogeonneonpeon');
+			}
+		}
+	})
+	.addBatch({
 		'when sequencing': {
 			topic: function () {
 
