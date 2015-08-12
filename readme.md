@@ -5,15 +5,14 @@ This library contains some helper functions for working with js promises.
 Without thenext:
 
 ```js
-Promise.all([
-	readSomeFile(),
-	querySomeDb()
-])
+somePromise
 	.then(function (results) {
 
 		return {
-			fileContents: results[0],
-			dbRows:       results[1]
+			someProperty:    results[0],
+			anotherProperty: results[1]
+			lotsOfPropertis: results[2]
+			iCouldGoOn:      results[3]
 		};
 	});
 ```
@@ -21,13 +20,65 @@ Promise.all([
 With thenext:
 
 ```js
-Promise.all([
-	readSomeFile(),
-	querySomeDb()
-])
+somePromise
 	.then(thenext.object(
-		'fileContents',
-		'dbRows'
+		'someProperty',
+		'anotherProperty',
+		'lotsOfPropertis',
+		'iCouldGoOn'
+	))
+```
+
+Without thenext:
+
+```js
+arrayOfPromiseGenerators
+	.reduce(
+		function (soFar, next) {
+
+			return soFar.then(next);
+		},
+		Promise.resolve()
+	)
+```
+
+With thenext:
+
+```js
+arrayOfPromiseGenerators
+	.then(thenext.pipeline)
+```
+
+Without thenext:
+
+```js
+userPromise
+	.then(function (user) {
+
+		if (!user.hasPermission) {
+
+			throw new Error('User missing permission.');
+		}
+	})
+```
+
+With thenext:
+
+```js
+userPromise
+	.then(thenext.assert(
+		function (user) { return user.hasPermission; },
+		'User missing permission.'
+	))
+```
+
+Or even nicer in ES6:
+
+```js
+userPromise
+	.then(thenext.assert(
+		user => user.hasPermission,
+		'User missing permission.'
 	))
 ```
 
@@ -35,32 +86,6 @@ Promise.all([
 
 
 
-
-
-
-
-[makePromise1(), makePromise2()]
-	.reduce(function (soFar, next) { return soFar.then(next); }, Promise.resolve(firstValue))
-
-
-Promise.resolve([makePromise1(), makePromise2()])
-	.then(thenext.pipeline)
-
-
-
-
-
-
-userPromise
-	.then(throw(
-		function (user) {
-			return user.hasPermission;
-		},
-		'User missing permission.'
-	))
-
-userPromise
-	.then(throw(user => user.hasPermission, 'User missing permission.'))
 
 
 
