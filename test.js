@@ -60,13 +60,11 @@ vows.describe('thenext')
 				nodify(
 					makeUsersPromise()
 						.then(thenext.map(function (user) { return user.name; }))
-						.then(thenext.map(asyncUppercase))
-						.then(Promise.all.bind(Promise))
 				)(this.callback);
 			},
 
 			'the mapped function should be applied to all elements in the array': function (topic) {
-				assert.equal(topic.join(), 'GEON,NEON,PEON');
+				assert.equal(topic.join(), 'geon,neon,peon');
 			}
 		},
 		'proxy for Array.prototype.filter': {
