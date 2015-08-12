@@ -3,7 +3,6 @@
 
 var thenext = require('./index.js');
 var vows = require('vows');
-var assert = require('assert');
 
 
 function makeUsersPromise () {
@@ -52,6 +51,15 @@ function nodify (promise) {
 }
 
 
+function assert (condition) {
+
+	if (!condition) {
+
+		throw new Error();
+	}
+}
+
+
 vows.describe('thenext')
 	.addBatch({
 		'proxy for Array.prototype.map': {
@@ -64,7 +72,7 @@ vows.describe('thenext')
 			},
 
 			'the mapped function should be applied to all elements in the array': function (topic) {
-				assert.equal(topic.join(), 'geon,neon,peon');
+				assert(topic.join() == 'geon,neon,peon');
 			}
 		},
 		'proxy for Array.prototype.filter': {
@@ -78,7 +86,7 @@ vows.describe('thenext')
 			},
 
 			'some elements should be filtered out': function (topic) {
-				assert.equal(topic.join(), 'neon,peon');
+				assert(topic.join() == 'neon,peon');
 			}
 		},
 		'proxy for Array.prototype.reduce': {
@@ -92,7 +100,7 @@ vows.describe('thenext')
 			},
 
 			'the array should be reduced': function (topic) {
-				assert.equal(topic, 'foogeonneonpeon');
+				assert(topic == 'foogeonneonpeon');
 			}
 		},
 		'when objectifying': {
@@ -111,7 +119,7 @@ vows.describe('thenext')
 			},
 
 			'the array should be objectified': function (topic) {
-				assert.equal(topic.id + topic.name, '1geon');
+				assert(topic.id + topic.name == '1geon');
 			}
 		},
 		'when objectifying without an array': {
@@ -130,7 +138,7 @@ vows.describe('thenext')
 			},
 
 			'the arguments should be objectified': function (topic) {
-				assert.equal(topic.id + topic.name, '1geon');
+				assert(topic.id + topic.name == '1geon');
 			}
 		},
 		'when asserting passes': {
@@ -166,7 +174,7 @@ vows.describe('thenext')
 			},
 
 			'the assert should not pass': function (topic) {
-				assert.equal(topic, 'This SHOULD be triggered.')
+				assert(topic == 'This SHOULD be triggered.')
 			}
 		},
 		'when pipelining': {
@@ -191,7 +199,7 @@ vows.describe('thenext')
 			},
 
 			'the functions should run in requence, the results passed to each other': function (topic) {
-				assert.equal(topic, 'undefined,0,1');
+				assert(topic == 'undefined,0,1');
 			}
 		},
 		'when sequencing': {
@@ -232,7 +240,7 @@ vows.describe('thenext')
 			},
 
 			'the functions should run in requence': function (topic) {
-				assert.equal(topic.join(), '0,1');
+				assert(topic.join() == '0,1');
 			}
 		}
 	})
