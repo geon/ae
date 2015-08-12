@@ -1,21 +1,33 @@
 
-Promise.all(promise1, promise2)
-	.then(function (results) {
 
-		return {
-			nameA: results[0],
-			nameB: results[1]
-		};
-	});
+This library contains some helper functions for working with js promises.
 
+Without thenext:
 
+```js
+	Promise.all([
+		readSomeFile(),
+		querySomeDb()
+	])
+		.then(function (results) {
 
-Promise.all(promise1, promise2)
-	.then(thenext.object('nameA', 'nameB'))
+			return {
+				fileContents: results[0],
+				dbRows:       results[1]
+			};
+		});
 
-Promise.all(promise1, promise2)
-	.then(thenext.object(['nameA', 'nameB']))
+With thenext:
 
+```js
+	Promise.all([
+		readSomeFile(),
+		querySomeDb()
+	])
+		.then(thenext.object(
+			'fileContents',
+			'dbRows'
+		))
 
 
 
