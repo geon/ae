@@ -67,6 +67,35 @@ vows.describe('thenext')
 		}
 	})
 	.addBatch({
+		'proxy for Array.prototype.filter': {
+			topic: function () {
+
+				var callback = this.callback;
+
+				makeUsersPromise()
+					.then(thenext.filter(function (user) { return user.id != 1; }))
+					.then(thenext.map(function (user) { return user.name; }))
+					.then(function (results) {
+
+						return results.join();
+					})
+					.then(function (results) {
+
+						callback(null, results);
+
+					}, function (error) {
+
+						callback(error);
+					});
+
+			},
+
+			'some elements should be filtered out': function (topic) {
+				assert.equal(topic, 'neon,peon');
+			}
+		}
+	})
+	.addBatch({
 		'when sequencing': {
 			topic: function () {
 
