@@ -27,13 +27,45 @@ function asyncUppercase (string) {
 	return new Promise(function(resolve, reject) {
 
 		setTimeout(function () {
+
 			resolve(string.toUpperCase());
+
 		}, 0);
 	});
 }
 
 
 vows.describe('thenext')
+	.addBatch({
+		'proxy for Array.prototype.map': {
+			topic: function () {
+
+				var callback = this.callback;
+
+				makeUsersPromise()
+					.then(thenext.map(function (user) { return user.name; }))
+					.then(thenext.map(asyncUppercase))
+					.then(Promise.all.bind(Promise))
+					.then(function (results) {
+
+						return results.join();
+					})
+					.then(function (results) {
+
+						callback(null, results);
+
+					}, function (error) {
+
+						callback(error);
+					});
+
+			},
+
+			'the mapped function should be applied to all elements in the array': function (topic) {
+				assert.equal(topic, 'GEON,NEON,PEON');
+			}
+		}
+	})
 	.addBatch({
 		'when sequencing': {
 			topic: function () {
