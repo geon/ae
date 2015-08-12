@@ -62,15 +62,11 @@ vows.describe('thenext')
 						.then(thenext.map(function (user) { return user.name; }))
 						.then(thenext.map(asyncUppercase))
 						.then(Promise.all.bind(Promise))
-						.then(function (results) {
-
-							return results.join();
-						})
 				)(this.callback);
 			},
 
 			'the mapped function should be applied to all elements in the array': function (topic) {
-				assert.equal(topic, 'GEON,NEON,PEON');
+				assert.equal(topic.join(), 'GEON,NEON,PEON');
 			}
 		},
 		'proxy for Array.prototype.filter': {
@@ -80,15 +76,11 @@ vows.describe('thenext')
 					makeUsersPromise()
 						.then(thenext.filter(function (user) { return user.id != 1; }))
 						.then(thenext.map(function (user) { return user.name; }))
-						.then(function (results) {
-
-							return results.join();
-						})
 				)(this.callback);
 			},
 
 			'some elements should be filtered out': function (topic) {
-				assert.equal(topic, 'neon,peon');
+				assert.equal(topic.join(), 'neon,peon');
 			}
 		},
 		'proxy for Array.prototype.reduce': {
@@ -215,10 +207,6 @@ vows.describe('thenext')
 						generator(10)
 					])
 						.then(thenext.sequence)
-						.then(function (results) {
-
-							return results.join();
-						})
 				)(this.callback);
 			},
 
@@ -227,7 +215,7 @@ vows.describe('thenext')
 			},
 
 			'the functions should run in requence': function (topic) {
-				assert.equal(topic, '0,1');
+				assert.equal(topic.join(), '0,1');
 			}
 		}
 	})
