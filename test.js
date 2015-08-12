@@ -121,6 +121,90 @@ vows.describe('thenext')
 		}
 	})
 	.addBatch({
+		'when objectifying': {
+			topic: function () {
+
+				var callback = this.callback;
+
+				Promise.resolve([
+					1,
+					'geon'
+				])
+					.then(thenext.object([
+						'id',
+						'name'
+					]))
+					.then(function (results) {
+
+						callback(null, results);
+
+					}, function (error) {
+
+						callback(error);
+					});
+
+			},
+
+			'the array should objectified': function (topic) {
+				assert.equal(topic.id + topic.name, '1geon');
+			}
+		}
+	})
+	.addBatch({
+		'when asserting': {
+			topic: function () {
+
+				var callback = this.callback;
+
+				Promise.resolve(1)
+					.then(thenext.assert(
+						function (result) { return result == 1; },
+						'This should not be triggered.'
+					))
+					.then(function (results) {
+
+						callback(null, results);
+
+					}, function (error) {
+
+						callback(error);
+					});
+
+			},
+
+			'the assert should pass': function (topic) {
+				// throwing
+			}
+		}
+	})
+	.addBatch({
+		'when asserting': {
+			topic: function () {
+
+				var callback = this.callback;
+
+				Promise.resolve(1)
+					.then(thenext.assert(
+						function (result) { return result == 2; },
+						'This SHOULD be triggered.'
+					))
+					.then(function (results) {
+
+						callback(results);
+
+					}, function (error) {
+
+						callback(null, error.message);
+					});
+
+			},
+
+			'the assert should pass': function (topic) {
+				assert.equal(topic, 'This SHOULD be triggered.')
+			}
+		}
+	})
+	.addBatch({
 		'when pipelining': {
 			topic: function () {
 
