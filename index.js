@@ -8,6 +8,20 @@ var thenext = {};
 module.exports = thenext;
 
 
+thenext.method = function (methodName) {
+
+	return function () {
+
+		var args = arguments;
+
+		return function (result) {
+
+			return result[methodName].apply(result, args);
+		};
+	};
+};
+
+
 thenext.map = function (func) {
 
 	return function (array) {
@@ -116,8 +130,3 @@ thenext.sequence = function (array) {
 			throw error;
 		});
 };
-
-
-
-
-	// .then(thenext.apply([].join))
