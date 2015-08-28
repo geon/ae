@@ -22,31 +22,11 @@ thenext.method = function (methodName) {
 };
 
 
-thenext.map = function (func) {
+// `thenext.map = thenext.method('map');` and so on.
+['map', 'filter', 'reduce'].forEach(function (methodName) {
 
-	return function (array) {
-
-		return array.map(func);
-	};
-};
-
-
-thenext.filter = function (func) {
-
-	return function (array) {
-
-		return array.filter(func);
-	};
-};
-
-
-thenext.reduce = function (func, initial) {
-
-	return function (array) {
-
-		return array.reduce(func, initial);
-	};
-};
+	thenext[methodName] = thenext.method(methodName);
+});
 
 
 thenext.object = function (names) {
