@@ -23,7 +23,7 @@ thenext.method = function (methodName) {
 
 
 // `thenext.map = thenext.method('map');` and so on.
-['map', 'filter', 'reduce'].forEach(function (methodName) {
+['map', 'filter', 'reduce', 'join'].forEach(function (methodName) {
 
 	thenext[methodName] = thenext.method(methodName);
 });

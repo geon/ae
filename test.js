@@ -103,6 +103,20 @@ vows.describe('thenext')
 				assert(topic == 'foogeonneonpeon');
 			}
 		},
+		'proxy for Array.prototype.join': {
+			topic: function () {
+
+				nodify(
+					makeUsersPromise()
+						.then(thenext.map(function (user) { return user.name; }))
+						.then(thenext.join(', '))
+				)(this.callback);
+			},
+
+			'the array should be joined': function (topic) {
+				assert(topic == 'geon, neon, peon');
+			}
+		},
 		'when objectifying': {
 			topic: function () {
 
