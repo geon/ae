@@ -2,7 +2,7 @@
 
 This library contains some helper functions for working with js promises.
 
-Without thenext:
+Without ae:
 
 ```js
 somePromise
@@ -17,11 +17,11 @@ somePromise
 	});
 ```
 
-With thenext:
+With ae:
 
 ```js
 somePromise
-	.then(thenext.object(
+	.then(ae.object(
 		'someProperty',
 		'anotherProperty',
 		'lotsOfProperties',
@@ -29,7 +29,7 @@ somePromise
 	))
 ```
 
-Without thenext:
+Without ae:
 
 ```js
 arrayOfPromiseGenerators
@@ -42,14 +42,14 @@ arrayOfPromiseGenerators
 	)
 ```
 
-With thenext:
+With ae:
 
 ```js
 arrayOfPromiseGenerators
-	.then(thenext.pipeline)
+	.then(ae.pipeline)
 ```
 
-Without thenext:
+Without ae:
 
 ```js
 userPromise
@@ -62,11 +62,11 @@ userPromise
 	})
 ```
 
-With thenext:
+With ae:
 
 ```js
 userPromise
-	.then(thenext.assert(
+	.then(ae.assert(
 		function (user) { return user.hasPermission; },
 		'User missing permission.'
 	))
@@ -76,7 +76,7 @@ Or even nicer in ES6:
 
 ```js
 userPromise
-	.then(thenext.assert(
+	.then(ae.assert(
 		user => user.hasPermission,
 		'User missing permission.'
 	))

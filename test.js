@@ -1,7 +1,7 @@
 'use strict';
 
 
-var thenext = require('./index.js');
+var ae = require('./index.js');
 var vows = require('vows');
 
 
@@ -60,14 +60,14 @@ function assert (condition) {
 }
 
 
-vows.describe('thenext')
+vows.describe('ae')
 	.addBatch({
 		'proxy for Array.prototype.map': {
 			topic: function () {
 
 				nodify(
 					makeUsersPromise()
-						.then(thenext.map(function (user) { return user.name; }))
+						.then(ae.map(function (user) { return user.name; }))
 				)(this.callback);
 			},
 
@@ -80,8 +80,8 @@ vows.describe('thenext')
 
 				nodify(
 					makeUsersPromise()
-						.then(thenext.filter(function (user) { return user.id != 1; }))
-						.then(thenext.map(function (user) { return user.name; }))
+						.then(ae.filter(function (user) { return user.id != 1; }))
+						.then(ae.map(function (user) { return user.name; }))
 				)(this.callback);
 			},
 
@@ -94,8 +94,8 @@ vows.describe('thenext')
 
 				nodify(
 					makeUsersPromise()
-						.then(thenext.map(function (user) { return user.name; }))
-						.then(thenext.reduce(function (soFar, next) { return soFar + next; }, 'foo'))
+						.then(ae.map(function (user) { return user.name; }))
+						.then(ae.reduce(function (soFar, next) { return soFar + next; }, 'foo'))
 				)(this.callback);
 			},
 
@@ -108,8 +108,8 @@ vows.describe('thenext')
 
 				nodify(
 					makeUsersPromise()
-						.then(thenext.map(function (user) { return user.name; }))
-						.then(thenext.join(', '))
+						.then(ae.map(function (user) { return user.name; }))
+						.then(ae.join(', '))
 				)(this.callback);
 			},
 
@@ -125,7 +125,7 @@ vows.describe('thenext')
 						1,
 						'geon'
 					])
-						.then(thenext.object([
+						.then(ae.object([
 							'id',
 							'name'
 						]))
@@ -144,7 +144,7 @@ vows.describe('thenext')
 						1,
 						'geon'
 					])
-						.then(thenext.object(
+						.then(ae.object(
 							'id',
 							'name'
 						))
@@ -160,7 +160,7 @@ vows.describe('thenext')
 
 				nodify(
 					Promise.resolve(1)
-						.then(thenext.assert(
+						.then(ae.assert(
 							function (result) { return result == 1; },
 							'This should not be triggered.'
 						))
@@ -176,7 +176,7 @@ vows.describe('thenext')
 
 				nodify(
 					Promise.resolve(1)
-						.then(thenext.assert(
+						.then(ae.assert(
 							function (result) { return result == 2; },
 							'This SHOULD be triggered.'
 						))
@@ -208,7 +208,7 @@ vows.describe('thenext')
 						generator(),
 						generator()
 					])
-						.then(thenext.pipeline)
+						.then(ae.pipeline)
 				)(this.callback);
 			},
 
@@ -245,7 +245,7 @@ vows.describe('thenext')
 						generator(100),
 						generator(10)
 					])
-						.then(thenext.sequence)
+						.then(ae.sequence)
 				)(this.callback);
 			},
 

@@ -4,11 +4,11 @@
 var Promise = require('es6-promise').Promise;
 
 
-var thenext = {};
-module.exports = thenext;
+var ae = {};
+module.exports = ae;
 
 
-thenext.method = function (methodName) {
+ae.method = function (methodName) {
 
 	return function () {
 
@@ -22,14 +22,14 @@ thenext.method = function (methodName) {
 };
 
 
-// `thenext.map = thenext.method('map');` and so on.
+// `ae.map = ae.method('map');` and so on.
 ['map', 'filter', 'reduce', 'join'].forEach(function (methodName) {
 
-	thenext[methodName] = thenext.method(methodName);
+	ae[methodName] = ae.method(methodName);
 });
 
 
-thenext.object = function (names) {
+ae.object = function (names) {
 
 	// Handle multiple arguments instead of an array.
 	if (arguments.length > 1) {
@@ -51,7 +51,7 @@ thenext.object = function (names) {
 };
 
 
-thenext.assert = function (assertion, errorMesage) {
+ae.assert = function (assertion, errorMesage) {
 
 	return function (result) {
 
@@ -67,10 +67,10 @@ thenext.assert = function (assertion, errorMesage) {
 };
 
 
-thenext.all = Promise.all.bind(Promise);
+ae.all = Promise.all.bind(Promise);
 
 
-thenext.pipeline = thenext.reduce(
+ae.pipeline = ae.reduce(
 	function (soFar, next) {
 
 		// Pipe each promise into the next.
@@ -81,7 +81,7 @@ thenext.pipeline = thenext.reduce(
 );
 
 
-thenext.sequence = function (array) {
+ae.sequence = function (array) {
 
 	var results = [];
 
