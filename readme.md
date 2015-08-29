@@ -9,10 +9,10 @@ somePromise
 	.then(function (results) {
 
 		return {
-			someProperty:    results[0],
-			anotherProperty: results[1]
-			lotsOfPropertis: results[2]
-			iCouldGoOn:      results[3]
+			someProperty:     results[0],
+			anotherProperty:  results[1]
+			lotsOfProperties: results[2]
+			iCouldGoOn:       results[3]
 		};
 	});
 ```
@@ -24,7 +24,7 @@ somePromise
 	.then(thenext.object(
 		'someProperty',
 		'anotherProperty',
-		'lotsOfPropertis',
+		'lotsOfProperties',
 		'iCouldGoOn'
 	))
 ```
