@@ -1,6 +1,128 @@
 
+Then æsthetics
+===============
 
-This library contains some helper functions for working with js promises.
+Helper functions for working with js promises.
+
+In my experience with working with js promises over the last 2 years, I learned to appriciate a certain programming style.
+
+At first, my code looked pretty much like the regular callback-hell based code.
+
+```js
+readSomeSettings
+	.then(function (settings) {
+
+		var relevantPieceOfSettings = extractRelevantPiece(settings);
+
+		return fetchDataBasedOnSettings(relevantPieceOfSettings)
+			.then(function (dataInJSONFormattedText) {
+
+				var data = JSON.parse(dataInJSONFormattedText);
+
+				return doStuffWithIt(data);
+			});
+	});
+```
+
+The reason is that I was more comfortable working with plain data instead of promises as soon as I had the chance, in this case, the calls to `extractRelevantPiece`, `JSON.parse` and `doStuffWithIt`.
+
+Consider this way of doing it instead:
+
+
+```js
+readSomeSettings
+	.then(extractRelevantPiece)
+	.then(fetchDataBasedOnSettings)
+	.then(JSON.parse)
+	.then(doStuffWithIt)
+```
+
+
+Instead of trying to work in the "normal" synchronous world, all data is returned as soon as possible to be wrapped up in a promise. From there, `then` is used to transorm it furher.
+
+This is a contrieved example, but I find that this style of coding makes the code more readable, writable and maintainable.
+
+However, common methods like `map` and `reduce` don't work well with `then`. This library 
+
+
+
+
+
+
+Let's look at a less contrived example. Starting with this callback hell-ish implementation, let's refactor to a more æsthetic style.
+
+```js
+fetchListOfUrls
+	.then(function (urlsJson) {
+
+		return Promise.all(JSON.parse(urlsJson).map(function (url) {
+
+			return fetchUrl(url);
+				.then(function (urlContent) {
+
+					return saveToDisk(urlContent);
+				})
+		}))
+	});
+```
+
+It's 3 scopes deep, and just barely readable.  In a real application it would be even worse. We can start with the low hanging fruit and remove the `JSON.parse` and `Promise.all` from inside the rest of the code.
+
+
+```js
+fetchListOfUrls
+	.then(JSON.parse)
+	.then(function (urls) {
+
+		return urlsJson.map(function (url) {
+
+			return fetchUrl(url);
+				.then(function (urlContent) {
+
+					return saveToDisk(urlContent);
+				})
+		}))
+	})
+	.then(Promise.all);
+```
+
+
+I think this is better separation of concern. But, we don't need those nested scopes. Let's un-nest them.
+
+
+```js
+fetchListOfUrls
+	.then(JSON.parse)
+	.then(function (urls) {
+
+		return urls.map(fetchUrl);
+	})
+	.then(function (urlsContent) {
+
+		return urlsContent.map(saveToDisk);
+	})
+	.then(Promise.all);
+```
+
+
+Shallower and clearer, but with lots of boilerplate noise. All the `function () {}` and `return` (which is easy to miss, but hard to debug, by the way) just serve to confuse the meaning of the actual code.
+
+You might have noticed how both anonymous functions are nearly identical, and completely pointless. Let's use an implementation of `map`that works with `then`.
+
+
+```js
+fetchListOfUrls
+	.then(JSON.parse)
+	.then(ae.map(fetchUrl))
+	.then(ae.map(saveToDisk))
+	.then(Promise.all);
+```
+
+Nice.
+
+
+
+
 
 Without ae:
 
