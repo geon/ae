@@ -260,24 +260,7 @@ vows.describe('ae')
 		'when running n in parallel': {
 			topic: function () {
 
-				var array = [
-					10,
-					20,
-					30,
-					10,
-					50,
-					60,
-					30,
-					10,
-					40,
-					40,
-					30,
-					10,
-					20,
-					10,
-					30,
-					10
-				];
+				var array = [10, 20, 30, 10, 50, 60, 30, 10, 40, 40, 30, 10, 20, 10, 30, 10];
 
 				nodify(
 					Promise.resolve(array)
