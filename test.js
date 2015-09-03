@@ -256,6 +256,49 @@ vows.describe('ae')
 			'the functions should run in requence': function (topic) {
 				assert(topic.join() == '0,1');
 			}
+		},
+		'when running n in parallel': {
+			topic: function () {
+
+				var array = [
+					10,
+					20,
+					30,
+					10,
+					50,
+					60,
+					30,
+					10,
+					40,
+					40,
+					30,
+					10,
+					20,
+					10,
+					30,
+					10
+				];
+
+				nodify(
+					Promise.resolve(array)
+						.then(ae.map(function (number) {
+
+							return function () {
+
+								return Promise.resolve(number).then(ae.delay(number));
+							};
+						}))
+						.then(ae.parallel(4))
+						.then(ae.assert(function (result) {
+
+							return result.join() == array.join();
+						}))
+				)(this.callback);
+			},
+
+			'parallel not in order': function (topic) {
+				// Throws
+			}
 		}
 	})
 	.run();
