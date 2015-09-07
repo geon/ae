@@ -29,6 +29,15 @@ ae.method = function (methodName) {
 });
 
 
+ae.pluck = function (propertyName) {
+
+	return ae.map(function (object) {
+
+		return object[propertyName];
+	});
+};
+
+
 ae.object = function (names) {
 
 	// Handle multiple arguments instead of an array.

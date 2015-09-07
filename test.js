@@ -81,7 +81,7 @@ vows.describe('ae')
 				nodify(
 					makeUsersPromise()
 						.then(ae.filter(function (user) { return user.id != 1; }))
-						.then(ae.map(function (user) { return user.name; }))
+						.then(ae.pluck('name'))
 				)(this.callback);
 			},
 
@@ -94,7 +94,7 @@ vows.describe('ae')
 
 				nodify(
 					makeUsersPromise()
-						.then(ae.map(function (user) { return user.name; }))
+						.then(ae.pluck('name'))
 						.then(ae.reduce(function (soFar, next) { return soFar + next; }, 'foo'))
 				)(this.callback);
 			},
@@ -108,13 +108,26 @@ vows.describe('ae')
 
 				nodify(
 					makeUsersPromise()
-						.then(ae.map(function (user) { return user.name; }))
+						.then(ae.pluck('name'))
 						.then(ae.join(', '))
 				)(this.callback);
 			},
 
 			'the array should be joined': function (topic) {
 				assert(topic == 'geon, neon, peon');
+			}
+		},
+		'when plucking from an array': {
+			topic: function () {
+
+				nodify(
+					makeUsersPromise()
+						.then(ae.pluck('name'))
+				)(this.callback);
+			},
+
+			'pluck should get the named property of each element': function (topic) {
+				assert(topic.join() == 'geon,neon,peon');
 			}
 		},
 		'when objectifying': {
