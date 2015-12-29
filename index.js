@@ -114,6 +114,7 @@ ae.sequence = function (array) {
 		})
 		.catch(function (error) {
 
+			// TODO: Test this.
 			// Rethrow with partial results.
 			error.partialSequenceResults = results;
 			throw error;
@@ -191,5 +192,7 @@ ae.parallel = function (numWorkers) {
 				// ...return their common results.
 				return results;
 			})
+
+			// TODO: Catch the error here and rethrow with partial results.
 	};
 };
