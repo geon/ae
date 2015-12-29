@@ -170,23 +170,6 @@ promiseOfArrayOfStrings
 
 
 
-#### With `Promise.all`:
-
-```js
-Promise.all([
-	doThis,
-	doThat,
-	doSomethingElse
-])
-	.then(ae.object([
-		'this',
-		'that',
-		'somethingElse'
-	]))
-```
-
-
-
 ### ae.object(propertyNames)
 
 #### Arguments
