@@ -174,6 +174,7 @@ Promise.all([
 		'that',
 		'somethingElse'
 	]))
+```
 
 
 
