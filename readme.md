@@ -271,6 +271,35 @@ arrayOfPromiseGeneratorsPromise
 
 
 
+### ae.sequence
+
+#### Arguments
+
+No arguments. Don't call it, just pass it in.
+
+#### Operates On
+
+An array of Promise generators. (function => Promise)[]
+
+#### Description
+
+Takes an array of promise generators. Runs the promise generators in sequence and resolves with an array containing the results of each promise. Much like `Promise.all` but not in parallel. If any of the generated promises rejects, the resulting promise is rejected with the error of the failed promise. The error will have an array `partialSequenceResults` containing the results of the promises that resolved successfully.
+
+Useful when you need to make sure thing are executed in order. Like db inserts following deletes, etc.
+
+#### Without ae:
+
+Way too much error prone code.
+
+#### With ae:
+
+```js
+arrayOfPromiseGenerators
+	.then(ae.sequence)
+```
+
+
+
 ### ae.parallel(numWorkers)
 
 #### Arguments
