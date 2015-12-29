@@ -4,6 +4,13 @@ Ae
 
 Then æsthetics - helper functions for working with js promises.
 
+Usage
+-----
+
+`npm install --save then-ae`
+
+`var ae = require('then-ae');`
+
 Motivation
 ----------
 
