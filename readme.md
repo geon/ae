@@ -1,8 +1,8 @@
 
-Then æsthetics
-===============
+Ae
+==
 
-Helper functions for working with js promises.
+Then æsthetics - helper functions for working with js promises.
 
 In my experience with working with js promises over the last 2 years, I learned to appriciate a certain programming style.
 
