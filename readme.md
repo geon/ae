@@ -24,7 +24,7 @@ readSomeSettings
 	});
 ```
 
-The reason is that I was more comfortable working with plain data instead of promises as soon as I had the chance, in this case, the calls to `extractRelevantPiece`, `JSON.parse` and `doStuffWithIt`.
+The reason was that I was more comfortable working with plain data instead of promises as soon as I had the chance.
 
 Consider this way of doing it instead:
 
@@ -42,14 +42,9 @@ Instead of trying to work in the "normal" synchronous world, all data is returne
 
 This is a contrived example, but I find that this style of coding makes the code more readable, writable and maintainable.
 
-However, common methods like `map` and `reduce` don't work well with `then`. This library 
+However, common methods like `map` and `reduce` don't work well with `then`. This library fixes that.
 
-
-
-
-
-
-Let's look at a less contrived example. Starting with this callback hell-ish implementation, let's refactor to a more æsthetic style.
+Have a look at this less contrived example. Starting with this callback hell-ish implementation, let's refactor to a more æsthetic style.
 
 ```js
 fetchListOfUrls
@@ -66,8 +61,7 @@ fetchListOfUrls
 	});
 ```
 
-It's 3 scopes deep, and just barely readable.  In a real application it would be even worse. We can start with the low hanging fruit and remove the `JSON.parse` and `Promise.all` from inside the rest of the code.
-
+It's 3 scopes deep and just barely readable. In a real application it would be even worse. We can start with the low hanging fruit by breaking out `JSON.parse` and `Promise.all`.
 
 ```js
 fetchListOfUrls
@@ -86,9 +80,7 @@ fetchListOfUrls
 	.then(Promise.all);
 ```
 
-
-I think this is better separation of concern. But, we don't need those nested scopes. Let's un-nest them.
-
+I think this is better separation of concern. Now we don't need those nested scopes. Let's un-nest them.
 
 ```js
 fetchListOfUrls
@@ -119,6 +111,10 @@ fetchListOfUrls
 ```
 
 Nice.
+
+
+
+
 
 
 
@@ -203,12 +199,3 @@ userPromise
 		'User missing permission.'
 	))
 ```
-
-
-
-
-
-
-
-
-
