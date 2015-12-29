@@ -180,8 +180,7 @@ Promise.all([
 
 
 
-ae.pipeline
------------
+### ae.pipeline
 
 #### Arguments
 
@@ -217,8 +216,7 @@ arrayOfPromiseGenerators
 
 
 
-ae.assert(assertionCallback, errorMessage)
-------------------------------------------
+### ae.assert(assertionCallback, errorMessage)
 
 #### Arguments
 
