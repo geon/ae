@@ -242,7 +242,7 @@ An array of Promise generators. (function => Promise)[]
 
 #### Description
 
-Takes an array of promise generators. Runs each promise sequentially, and passes the result of each one into the next.
+Takes an array of promise generators. Runs each promise generator sequentially, and passes the result of each one into the next. The resulting promise contains the result of the last generated promise. If any generated promise rejects, the pipeline ends there (no more generator is executed), and the resulting promise is rejected with the error of the failed promise.
 
 #### Without ae:
 
@@ -283,7 +283,7 @@ An array of Promise generators. (function => Promise)[]
 
 #### Description
 
-Takes an array of promise generators. Runs the promises in parallel, but limited to `numWorkers` "threads" at any time. If any of the generated promises rejects, all workers are canceled, and the resulting promise is rejected with the error of the failed promise.
+Takes an array of promise generators. Runs the promise generators in parallel, but limited to `numWorkers` "threads" at any time. If any of the generated promises rejects, all workers are canceled, and the resulting promise is rejected with the error of the failed promise.
 
 Useful when you need to convert a gazillion image files, or any other task you'd like to run in parallel, but that would use too much resources to do *all* at once.
 
