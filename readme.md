@@ -247,19 +247,24 @@ Takes an array of promise generators. Runs each promise sequentially, and passes
 #### Without ae:
 
 ```js
-arrayOfPromiseGenerators
-	.reduce(
-		function (soFar, next) {
+arrayOfPromiseGeneratorsPromise
+	.then(function (arrayOfPromiseGenerators) {
 
-			return soFar.then(next);
-		},
-		Promise.resolve()
-	)
+		return arrayOfPromiseGenerators
+			.reduce(
+				function (soFar, next) {
+
+					return soFar.then(next);
+				},
+				Promise.resolve()
+			);
+	})
+
 ```
 
 #### With ae:
 
 ```js
-arrayOfPromiseGenerators
+arrayOfPromiseGeneratorsPromise
 	.then(ae.pipeline)
 ```
