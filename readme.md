@@ -112,15 +112,29 @@ fetchListOfUrls
 
 Nice.
 
+API
+===
 
 
 
+ae.object(propertyNames)
+------------------------
 
+### Arguments
 
+`propertyNames`: string[]
 
+### Operates On
 
+any[]
 
-Without ae:
+#### Description
+
+Turns an array into an object with property names specified by the argument.
+
+Can optionally be called with multiple parameters instead of an array, like `ae.object(propertyName1 [, propertyName2...])`.
+
+### Without ae:
 
 ```js
 somePromise
@@ -132,10 +146,10 @@ somePromise
 			lotsOfProperties: results[2]
 			iCouldGoOn:       results[3]
 		};
-	});
+	})
 ```
 
-With ae:
+### With ae:
 
 ```js
 somePromise
@@ -147,7 +161,38 @@ somePromise
 	))
 ```
 
-Without ae:
+### With `Promise.all`:
+
+```js
+Promise.all([
+	doThis,
+	doThat,
+	doSomethingElse
+])
+	.then(ae.object([
+		'this',
+		'that',
+		'somethingElse'
+	]))
+
+
+
+ae.pipeline
+-----------
+
+### Arguments
+
+No arguments. Don't call it, just pass it in.
+
+### Operates On
+
+An array of Promise generators. (function => Promise)[]
+
+#### Description
+
+Takes an array of promise generators. Runs each promise sequentially, and passes the result of each one into the next.
+
+### Without ae:
 
 ```js
 arrayOfPromiseGenerators
@@ -160,14 +205,32 @@ arrayOfPromiseGenerators
 	)
 ```
 
-With ae:
+### With ae:
 
 ```js
 arrayOfPromiseGenerators
 	.then(ae.pipeline)
 ```
 
-Without ae:
+
+
+ae.assert(assertionCallback, errorMessage)
+------------------------------------------
+
+### Arguments
+
+`assertionCallback`: function(any) => boolean
+`errorMessage`: String
+
+### Operates On
+
+any
+
+#### Description
+
+Use the assertion callback to check the result of the previous promise. If you return `false`, an error with the message `errorMessage` will be thrown.
+
+### Without ae:
 
 ```js
 userPromise
@@ -180,7 +243,7 @@ userPromise
 	})
 ```
 
-With ae:
+### With ae:
 
 ```js
 userPromise
@@ -190,7 +253,7 @@ userPromise
 	))
 ```
 
-Or even nicer in ES6:
+### With ES6:
 
 ```js
 userPromise
