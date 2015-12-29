@@ -227,7 +227,7 @@ arrayOfPromiseGenerators
 
 any
 
-##### Description
+#### Description
 
 Use the assertion callback to check the result of the previous promise. If you return `false`, an error with the message `errorMessage` will be thrown.
 
