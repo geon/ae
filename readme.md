@@ -120,6 +120,43 @@ API
 
 
 
+### ae.method(methodName)(...arguments)
+
+#### Arguments
+
+`methodName`: String
+
+#### Operates On
+
+Object
+
+#### Description
+
+A curried function to call the method named `methodName` with the arguments in the second function application.
+
+Since it is curried, you can easily implement proxy functions for any method.
+
+#### Without ae:
+
+```js
+promiseOfArray
+	.then(function (array) {
+
+		return array.slice(5);
+	})
+```
+
+#### With ae:
+
+```js
+var slice = ae.method('slice');
+
+promiseOfArray
+	.then(slice(5))
+```
+
+
+
 ### Proxies for `Array.prototype.map`, `.filter`, `.reduce` and `.join`
 
 #### Arguments
