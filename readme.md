@@ -268,3 +268,30 @@ arrayOfPromiseGeneratorsPromise
 arrayOfPromiseGeneratorsPromise
 	.then(ae.pipeline)
 ```
+
+
+
+### ae.parallel(numWorkers)
+
+#### Arguments
+
+`numWorkers`: number
+
+#### Operates On
+
+An array of Promise generators. (function => Promise)[]
+
+##### Description
+
+Takes an array of promise generators. Runs the promises in parallel, but limited to `numWorkers` "threads" at any time. Useful when you need to convert a gazillion image files, or any other task you'd like to run in parallel, but that would use too much resources to do *all* at once.
+
+#### Without ae:
+
+Seriously? I don't even know. Probably close to what ae implements, copy-pasted from Stack Overflow. :P
+
+#### With ae:
+
+```js
+arrayOfResourceIntensivePromiseGenerators
+	.then(ae.parallel(4))
+```
