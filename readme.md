@@ -120,6 +120,73 @@ API
 
 
 
+### Proxies for `Array.prototype.map`, `.filter`, `.reduce` and `.join`
+
+#### Arguments
+
+The same arguments you would pass to their `Array.prototype` counterpart.
+
+#### Operates On
+
+any[]
+
+#### Description
+
+Use these to manipulate a promise resolving with an array, much like you would in a synchronous setting.
+
+#### Without ae:
+
+```js
+promiseOfArrayOfStrings
+	.then(function (arrayOfStrings) {
+
+		return arrayOfStrings
+			.map(function (string) {
+
+				return string.toUpperCase();
+			})
+			.join(', ');
+	})
+```
+
+#### With ae:
+
+```js
+promiseOfArrayOfStrings
+	.then(ae.map(function (string) {
+
+		return string.toUpperCase();
+	}))
+	.then(ae.join(', '))
+```
+
+Or slightly shorter:
+
+```js
+promiseOfArrayOfStrings
+	.then(ae.map(ae.method('toUpperCase')))
+	.then(ae.join(', '))
+```
+
+
+
+#### With `Promise.all`:
+
+```js
+Promise.all([
+	doThis,
+	doThat,
+	doSomethingElse
+])
+	.then(ae.object([
+		'this',
+		'that',
+		'somethingElse'
+	]))
+```
+
+
+
 ### ae.object(propertyNames)
 
 #### Arguments
