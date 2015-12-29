@@ -180,42 +180,6 @@ Promise.all([
 
 
 
-### ae.pipeline
-
-#### Arguments
-
-No arguments. Don't call it, just pass it in.
-
-#### Operates On
-
-An array of Promise generators. (function => Promise)[]
-
-##### Description
-
-Takes an array of promise generators. Runs each promise sequentially, and passes the result of each one into the next.
-
-#### Without ae:
-
-```js
-arrayOfPromiseGenerators
-	.reduce(
-		function (soFar, next) {
-
-			return soFar.then(next);
-		},
-		Promise.resolve()
-	)
-```
-
-#### With ae:
-
-```js
-arrayOfPromiseGenerators
-	.then(ae.pipeline)
-```
-
-
-
 ### ae.assert(assertionCallback, errorMessage)
 
 #### Arguments
@@ -262,4 +226,40 @@ userPromise
 		user => user.hasPermission,
 		'User missing permission.'
 	))
+```
+
+
+
+### ae.pipeline
+
+#### Arguments
+
+No arguments. Don't call it, just pass it in.
+
+#### Operates On
+
+An array of Promise generators. (function => Promise)[]
+
+##### Description
+
+Takes an array of promise generators. Runs each promise sequentially, and passes the result of each one into the next.
+
+#### Without ae:
+
+```js
+arrayOfPromiseGenerators
+	.reduce(
+		function (soFar, next) {
+
+			return soFar.then(next);
+		},
+		Promise.resolve()
+	)
+```
+
+#### With ae:
+
+```js
+arrayOfPromiseGenerators
+	.then(ae.pipeline)
 ```
