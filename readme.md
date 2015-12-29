@@ -164,7 +164,7 @@ Or slightly shorter:
 
 ```js
 promiseOfArrayOfStrings
-	.then(ae.map(ae.method('toUpperCase')))
+	.then(ae.map(ae.method('toUpperCase')()))
 	.then(ae.join(', '))
 ```
 
