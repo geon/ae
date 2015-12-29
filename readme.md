@@ -240,7 +240,7 @@ No arguments. Don't call it, just pass it in.
 
 An array of Promise generators. (function => Promise)[]
 
-##### Description
+#### Description
 
 Takes an array of promise generators. Runs each promise sequentially, and passes the result of each one into the next.
 
@@ -281,7 +281,7 @@ arrayOfPromiseGeneratorsPromise
 
 An array of Promise generators. (function => Promise)[]
 
-##### Description
+#### Description
 
 Takes an array of promise generators. Runs the promises in parallel, but limited to `numWorkers` "threads" at any time. Useful when you need to convert a gazillion image files, or any other task you'd like to run in parallel, but that would use too much resources to do *all* at once.
 
