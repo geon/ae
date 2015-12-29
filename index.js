@@ -29,6 +29,15 @@ ae.method = function (methodName) {
 });
 
 
+ae.pluck = function (propertyName) {
+
+	return ae.map(function (object) {
+
+		return object[propertyName];
+	});
+};
+
+
 ae.object = function (names) {
 
 	// Handle multiple arguments instead of an array.
@@ -109,4 +118,78 @@ ae.sequence = function (array) {
 			error.partialSequenceResults = results;
 			throw error;
 		});
+};
+
+
+ae.delay = function (delayInMilliseconds) {
+
+	return function (result) {
+
+		return new Promise(function (resolve, reject) {
+
+			setTimeout(function () { resolve(result); }, delayInMilliseconds);
+		});
+	};
+};
+
+
+ae.parallel = function (numWorkers) {
+
+	return function (generators) {
+
+		// Pair the job with it's index, so the result can be saved at the right place.
+		var queue = generators.map(function (job, index) {
+
+			return {
+				job: job,
+				index: index
+			};
+		});
+
+		var results = [];
+
+		var runNextJob = function () {
+
+			// Pick a job from the common queue.
+			var next = queue.shift();
+
+			// Quit this worker if there are no more jobs.
+			if (!next) {
+
+				return;
+			}
+
+			// Do the job, save the result and loop.
+			return next.job()
+				.then(function (result) {
+
+					results[next.index] = result;
+				})
+				.catch(function (error) {
+
+					// There was an error, so flush the queue.
+					// No point in having the other workers continue.
+					generators = [];
+
+					// The error is not handled here. Propagate.
+					throw error;
+				})
+				.then(runNextJob);
+		};
+
+		// Start n workers.
+		var workers = [];
+		for (var i = 0; i < numWorkers; i++) {
+
+			workers.push(runNextJob());
+		}
+
+		// When all workers are done...
+		return Promise.all(workers)
+			.then(function () {
+
+				// ...return their common results.
+				return results;
+			})
+	};
 };

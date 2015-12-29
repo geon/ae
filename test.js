@@ -81,7 +81,7 @@ vows.describe('ae')
 				nodify(
 					makeUsersPromise()
 						.then(ae.filter(function (user) { return user.id != 1; }))
-						.then(ae.map(function (user) { return user.name; }))
+						.then(ae.pluck('name'))
 				)(this.callback);
 			},
 
@@ -94,7 +94,7 @@ vows.describe('ae')
 
 				nodify(
 					makeUsersPromise()
-						.then(ae.map(function (user) { return user.name; }))
+						.then(ae.pluck('name'))
 						.then(ae.reduce(function (soFar, next) { return soFar + next; }, 'foo'))
 				)(this.callback);
 			},
@@ -108,13 +108,26 @@ vows.describe('ae')
 
 				nodify(
 					makeUsersPromise()
-						.then(ae.map(function (user) { return user.name; }))
+						.then(ae.pluck('name'))
 						.then(ae.join(', '))
 				)(this.callback);
 			},
 
 			'the array should be joined': function (topic) {
 				assert(topic == 'geon, neon, peon');
+			}
+		},
+		'when plucking from an array': {
+			topic: function () {
+
+				nodify(
+					makeUsersPromise()
+						.then(ae.pluck('name'))
+				)(this.callback);
+			},
+
+			'pluck should get the named property of each element': function (topic) {
+				assert(topic.join() == 'geon,neon,peon');
 			}
 		},
 		'when objectifying': {
@@ -255,6 +268,32 @@ vows.describe('ae')
 
 			'the functions should run in requence': function (topic) {
 				assert(topic.join() == '0,1');
+			}
+		},
+		'when running n in parallel': {
+			topic: function () {
+
+				var array = [10, 20, 30, 10, 50, 60, 30, 10, 40, 40, 30, 10, 20, 10, 30, 10];
+
+				nodify(
+					Promise.resolve(array)
+						.then(ae.map(function (number) {
+
+							return function () {
+
+								return Promise.resolve(number).then(ae.delay(number));
+							};
+						}))
+						.then(ae.parallel(4))
+						.then(ae.assert(function (result) {
+
+							return result.join() == array.join();
+						}))
+				)(this.callback);
+			},
+
+			'parallel not in order': function (topic) {
+				// Throws
 			}
 		}
 	})
