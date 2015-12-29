@@ -4,6 +4,9 @@ Ae
 
 Then æsthetics - helper functions for working with js promises.
 
+Motivation
+----------
+
 In my experience with working with js promises over the last 2 years, I learned to appreciate a certain programming style.
 
 At first, my code looked pretty much like the regular callback-hell based code.
@@ -113,18 +116,17 @@ fetchListOfUrls
 Nice.
 
 API
-===
+---
 
 
 
-ae.object(propertyNames)
-------------------------
+### ae.object(propertyNames)
 
-### Arguments
+#### Arguments
 
 `propertyNames`: string[]
 
-### Operates On
+#### Operates On
 
 any[]
 
@@ -134,7 +136,7 @@ Turns an array into an object with property names specified by the argument.
 
 Can optionally be called with multiple parameters instead of an array, like `ae.object(propertyName1 [, propertyName2...])`.
 
-### Without ae:
+#### Without ae:
 
 ```js
 somePromise
@@ -149,7 +151,7 @@ somePromise
 	})
 ```
 
-### With ae:
+#### With ae:
 
 ```js
 somePromise
@@ -161,7 +163,7 @@ somePromise
 	))
 ```
 
-### With `Promise.all`:
+#### With `Promise.all`:
 
 ```js
 Promise.all([
@@ -181,19 +183,19 @@ Promise.all([
 ae.pipeline
 -----------
 
-### Arguments
+#### Arguments
 
 No arguments. Don't call it, just pass it in.
 
-### Operates On
+#### Operates On
 
 An array of Promise generators. (function => Promise)[]
 
-#### Description
+##### Description
 
 Takes an array of promise generators. Runs each promise sequentially, and passes the result of each one into the next.
 
-### Without ae:
+#### Without ae:
 
 ```js
 arrayOfPromiseGenerators
@@ -206,7 +208,7 @@ arrayOfPromiseGenerators
 	)
 ```
 
-### With ae:
+#### With ae:
 
 ```js
 arrayOfPromiseGenerators
@@ -218,20 +220,20 @@ arrayOfPromiseGenerators
 ae.assert(assertionCallback, errorMessage)
 ------------------------------------------
 
-### Arguments
+#### Arguments
 
 `assertionCallback`: function(any) => boolean
 `errorMessage`: String
 
-### Operates On
+#### Operates On
 
 any
 
-#### Description
+##### Description
 
 Use the assertion callback to check the result of the previous promise. If you return `false`, an error with the message `errorMessage` will be thrown.
 
-### Without ae:
+#### Without ae:
 
 ```js
 userPromise
@@ -244,7 +246,7 @@ userPromise
 	})
 ```
 
-### With ae:
+#### With ae:
 
 ```js
 userPromise
@@ -254,7 +256,7 @@ userPromise
 	))
 ```
 
-### With ES6:
+#### With ES6:
 
 ```js
 userPromise
