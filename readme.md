@@ -4,7 +4,7 @@ Ae
 
 Then æsthetics - helper functions for working with js promises.
 
-In my experience with working with js promises over the last 2 years, I learned to appriciate a certain programming style.
+In my experience with working with js promises over the last 2 years, I learned to appreciate a certain programming style.
 
 At first, my code looked pretty much like the regular callback-hell based code.
 
@@ -38,9 +38,9 @@ readSomeSettings
 ```
 
 
-Instead of trying to work in the "normal" synchronous world, all data is returned as soon as possible to be wrapped up in a promise. From there, `then` is used to transorm it furher.
+Instead of trying to work in the "normal" synchronous world, all data is returned as soon as possible to be wrapped up in a promise. From there, `then` is used to transform it further.
 
-This is a contrieved example, but I find that this style of coding makes the code more readable, writable and maintainable.
+This is a contrived example, but I find that this style of coding makes the code more readable, writable and maintainable.
 
 However, common methods like `map` and `reduce` don't work well with `then`. This library 
 
