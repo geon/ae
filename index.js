@@ -1,7 +1,15 @@
 'use strict';
 
 
-var Promise = require('es6-promise').Promise;
+// Optionally include a Promise polyfill.
+try {
+
+	require('es6-promise').polyfill();
+
+} catch (e) {
+
+	// Ignore the polyfill not being installed. You probably don't need it.
+}
 
 
 var ae = {};

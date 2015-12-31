@@ -9,7 +9,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "es6-promise": "^3.0.2"
   },
   "devDependencies": {
     "vows": "^0.8.1"
