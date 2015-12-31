@@ -1,6 +1,6 @@
 {
   "name": "then-ae",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Then-utilities for ES6 promises.",
   "main": "index.js",
   "repository": {
