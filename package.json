@@ -1,12 +1,19 @@
 {
   "name": "then-ae",
   "version": "0.0.1",
-  "description": "then-utilities for ES6 promises.",
+  "description": "Then-utilities for ES6 promises.",
   "main": "index.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/geon/then-ae.git"
+  },
   "scripts": {
     "test": "node test.js"
   },
-  "author": "",
+  "author": {
+    "name": "Victor Widell",
+    "url": "https://github.com/geon"
+  },
   "license": "MIT",
   "dependencies": {
   },
