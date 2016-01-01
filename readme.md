@@ -324,6 +324,36 @@ userPromise
 
 
 
+### ae.all
+
+#### Arguments
+
+No arguments. Don't call it, just pass it in.
+
+#### Operates On
+
+Promise[]
+
+#### Description
+
+Simply a bound version of Promise.all, so that it can be passed to `then`.
+
+#### Without ae:
+
+```js
+arrayOfPromisesPromise
+	.then(Promise.all.bind(Promise))
+```
+
+#### With ae:
+
+```js
+arrayOfPromisesPromise
+	.then(ae.all)
+```
+
+
+
 ### ae.pipeline
 
 #### Arguments
@@ -361,36 +391,6 @@ arrayOfPromiseGeneratorsPromise
 ```js
 arrayOfPromiseGeneratorsPromise
 	.then(ae.pipeline)
-```
-
-
-
-### ae.all
-
-#### Arguments
-
-No arguments. Don't call it, just pass it in.
-
-#### Operates On
-
-Promise[]
-
-#### Description
-
-Simply a bound version of Promise.all, so that it can be passed to `then`.
-
-#### Without ae:
-
-```js
-arrayOfPromisesPromise
-	.then(Promise.all.bind(Promise))
-```
-
-#### With ae:
-
-```js
-arrayOfPromisesPromise
-	.then(ae.all)
 ```
 
 
