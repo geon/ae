@@ -204,6 +204,23 @@ vows.describe('ae')
 				assert(topic == 'This SHOULD be triggered.')
 			}
 		},
+		'when `all`-ing': {
+			topic: function () {
+
+				nodify(
+					makeUsersPromise()
+						.then(ae.pluck('name'))
+						.then(ae.map(function (name) {
+							return Promise.resolve(name);
+						}))
+						.then(ae.all)
+				)(this.callback);
+			},
+
+			'all should work just like Promise.all.bind(Promise)': function (topic) {
+				assert(topic.join() == 'geon,neon,peon');
+			}
+		},
 		'when pipelining': {
 			topic: function () {
 

@@ -98,6 +98,10 @@ ae.pipeline = ae.reduce(
 );
 
 
+// ES6 Promise.all must be bound! Just passing in `Promise.all` to `then` won't work.
+ae.all = Promise.all.bind(Promise);
+
+
 ae.sequence = function (array) {
 
 	var results = [];

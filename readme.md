@@ -87,7 +87,7 @@ fetchListOfUrls
 				})
 		}))
 	})
-	.then(Promise.all);
+	.then(Promise.all.bind(Promise));
 ```
 
 I think this is better separation of concern. Now we don't need those nested scopes. Let's un-nest them.
@@ -103,13 +103,13 @@ fetchListOfUrls
 
 		return urlsContent.map(saveToDisk);
 	})
-	.then(Promise.all);
+	.then(Promise.all.bind(Promise));
 ```
 
 
 Shallower and clearer, but with lots of boilerplate noise. All the `function () {}` and `return` (which is easy to miss, but hard to debug, by the way) just serve to confuse the meaning of the actual code.
 
-You might have noticed how both anonymous functions are nearly identical, and completely pointless. Let's use an implementation of `map`that works with `then`.
+You might have noticed how both anonymous functions are nearly identical, and completely pointless. Let's use an implementation of `map`that works with `then`. Also, `Promise.all.bind(Promise)` looks horribly redundant.
 
 
 ```js
@@ -117,7 +117,7 @@ fetchListOfUrls
 	.then(JSON.parse)
 	.then(ae.map(fetchUrl))
 	.then(ae.map(saveToDisk))
-	.then(Promise.all);
+	.then(ae.all);
 ```
 
 Nice.
@@ -361,6 +361,36 @@ arrayOfPromiseGeneratorsPromise
 ```js
 arrayOfPromiseGeneratorsPromise
 	.then(ae.pipeline)
+```
+
+
+
+### ae.all
+
+#### Arguments
+
+No arguments. Don't call it, just pass it in.
+
+#### Operates On
+
+Promise[]
+
+#### Description
+
+Simply a bound version of Promise.all, so that it can be passed to `then`.
+
+#### Without ae:
+
+```js
+arrayOfPromisesPromise
+	.then(Promise.all.bind(Promise))
+```
+
+#### With ae:
+
+```js
+arrayOfPromisesPromise
+	.then(ae.all)
 ```
 
 
