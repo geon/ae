@@ -214,6 +214,45 @@ promiseOfArrayOfStrings
 
 
 
+### ae.pluck(propertyName)
+
+#### Arguments
+
+`propertyName`: string
+
+#### Operates On
+
+object[]
+
+#### Description
+
+Picks out the property named `propertyName` from each object in an array.
+
+Useful for getting only the names from an array of user objects, for example.
+
+#### Without ae:
+
+```js
+loadUsers()
+	.then(function (users) {
+
+		return users
+			.map(function (user) {
+
+				return user.name;
+			});
+	})
+```
+
+#### With ae:
+
+```js
+loadUsers()
+	.then(ae.pluck('name'))
+```
+
+
+
 ### ae.object(propertyNames)
 
 #### Arguments
