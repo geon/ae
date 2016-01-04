@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type" : "git",
-    "url" : "https://github.com/geon/then-ae.git"
+    "url" : "https://github.com/geon/ae.git"
   },
   "scripts": {
     "test": "node test.js"
