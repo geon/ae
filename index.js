@@ -84,6 +84,7 @@ ae.assert = function (assertion, errorMesage) {
 };
 
 
+// ES6 Promise.all must be bound! Just passing in `Promise.all` to `then` won't work.
 ae.all = Promise.all.bind(Promise);
 
 
@@ -96,10 +97,6 @@ ae.pipeline = ae.reduce(
 	// Start with an empty promise.
 	Promise.resolve()
 );
-
-
-// ES6 Promise.all must be bound! Just passing in `Promise.all` to `then` won't work.
-ae.all = Promise.all.bind(Promise);
 
 
 ae.sequence = function (array) {
