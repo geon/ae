@@ -92,6 +92,8 @@ fetchListOfUrls
 
 I think this is better separation of concern. Now we don't need those nested scopes. Let's un-nest them.
 
+`fetchUrl` returns a promise, so using it to map over an array produces a promise-of-an-array-of-promises. `Promise.all` turns it into a more manageable promise-of-an-array, that can in turn be mapped over with `saveToDisk`, and so on.
+
 ```js
 fetchListOfUrls
 	.then(JSON.parse)
@@ -99,6 +101,7 @@ fetchListOfUrls
 
 		return urls.map(fetchUrl);
 	})
+	.then(Promise.all.bind(Promise));
 	.then(function (urlsContent) {
 
 		return urlsContent.map(saveToDisk);
@@ -116,6 +119,7 @@ You might have noticed how both anonymous functions are nearly identical, and co
 fetchListOfUrls
 	.then(JSON.parse)
 	.then(ae.map(fetchUrl))
+	.then(ae.all);
 	.then(ae.map(saveToDisk))
 	.then(ae.all);
 ```
